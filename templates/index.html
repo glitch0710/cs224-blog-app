@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+        <h1>Welcome {{ name }}</h1>
+        <h5>{{ name|wordcount }}</h5>
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="age">Input Current Age: </label>
+            <input class="form-control" type="number" step="1" name="age" id="age" />
+            <div class="row justify-content-end">
+                <button class="btn btn-danger mt-3" type="submit">Submit</button>
+            </div>
+            
+        </form>
+
+        {% if age is not None %}
+            {% if age >= 18 %}
+                <h4>Eligible to vote</h4>
+            {% else %}
+                <h4>Not eligible to vote</h4>
+            {% endif %}
+        {% endif %}
+
+        <h3>Subjects ({{ subjects|length }} subject{{ subjects|pluralize }})</h3>
+        <ul>
+        {% for subject in subjects %}
+            <li>{{ subject }}</li>
+        {% empty %}
+            <li>No items in subjects</li>
+        {% endfor %}
+        </ul>
+
+        <h5>Randomized subject: {{ subjects|random }}</h5>
+
+        <a href="{% url 'another_page' %}">Go to another page</a>
+    </div>
+{% endblock %}
