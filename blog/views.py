@@ -23,5 +23,14 @@ def another_page(request):
     return render(request, 'pagetwo.html')
 
 
+def another_page_one(request, pk):
+    
+    context = {
+        'pk': pk,
+    }
+
+    return render(request, 'pagefour.html', context)
+
+
 def page_three(request):
     return render(request, 'pagethree.html')

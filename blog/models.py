@@ -1,21 +1,29 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Post(models.Model):
-    title = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250)
-    body = models.TextField()
-    likes = models.DecimalField(max_digits=11, decimal_places=2)
+    title = models.CharField(max_length=100, null=False, blank=False)
+    description = models.TextField()
+    date_created = models.DateField(auto_now_add=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
     
 
-class Sample(models.Model):
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    middlename = models.CharField(max_length=100)
+class Album(models.Model):
+    title = models.CharField(max_length=100)
+    artist = models.CharField(max_length=100)
+    genre = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.firstname
-    
+        return self.title + " | " + self.artist
+
+
+class Song(models.Model):
+    name = models.CharField(max_length=100, blank=False, null=False)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name

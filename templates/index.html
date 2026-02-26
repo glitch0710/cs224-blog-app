@@ -2,7 +2,7 @@
 
 {% block content %}
         <h1>Welcome {{ name }}</h1>
-        <h5>{{ name|wordcount }}</h5>
+
         <form action="" method="post">
             {% csrf_token %}
             <label for="age">Input Current Age: </label>
