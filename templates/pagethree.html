@@ -3,4 +3,15 @@
 {% block content %}
     <h1>This is page three</h1>
     <h5><i>It is currently {% now "d-m-y" %}</i></h5>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <label for="title">Title</label>
+        <input class="form-control" type="text" id="title" name="title" />
+        <label for="artist">Artist</label>
+        <input class = 'form-control' type="text" id="artist" name="artist" />
+        <label for="genre">Genre</label>
+        <input class = 'form-control' type="text" id="genre" name="genre" />
+        <button class="btn btn-success mt-4" type="submit">Submit</button>
+    </form>
 {% endblock %}
