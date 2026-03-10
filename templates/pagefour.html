@@ -2,6 +2,11 @@
 
 {% block content %}
 
-<h1>{{ pk }}</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <a href="{% url 'another_page' %}" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
 
 {% endblock %}

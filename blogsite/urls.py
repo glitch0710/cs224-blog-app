@@ -23,5 +23,6 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('anotherpage/', views.another_page, name="another_page"),
     path('anotherpage/<str:pk>', views.another_page_one, name="another_page_one"),
+    path('delete/<str:pk>', views.delete_song, name="delete_song"),
     path('pagethree/', views.page_three, name="page_three"),
 ]

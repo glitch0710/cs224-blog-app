@@ -2,20 +2,7 @@
 
 {% block content %}
 
-<h1>Hello</h1>
-
-
-
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s
-            content.</p>
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
-    </div>
-</div>
+<h1>Songs</h1>
 
 <form action="" method="post">
     {% csrf_token %}
@@ -23,6 +10,42 @@
     <button class="btn btn-success" type="submit">Submit</button>
 </form>
 
+<form action="" method="get" class="row row-cols-lg-auto g-3 align-items-center mt-5">
+    <div class="col-12">
+        <label for="search_song">Search: </label>
+    </div>
+    <div class="col-12">
+        <input class="form-control" type="text" name="search_song" id="search_song" />
+    </div>
+    <div class="col-12">
+        <button class="btn btn-success" type="submit">Search</button>
+    </div>   
+</form>
 
+<table class="table table-striped mt-2">
+    <thead class="table table-success">
+        <th>Name</th>
+        <th>Album</th>
+        <th>Artist</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        {% for song in songs %}
+            <tr>
+                <td>{{ song.name }}</td>
+                <td>{{ song.album.title }}</td>
+                <td>{{ song.album.artist }}</td>
+                <td>
+                    <a href="{% url 'another_page_one' song.pk %}" class="btn btn-sm btn-success"><i data-feather="edit-3"></i></a>
+                    <a href="{% url 'delete_song' song.pk %}" class="btn btn-sm btn-danger"><i data-feather="trash-2"></i></a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No song(s) found.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

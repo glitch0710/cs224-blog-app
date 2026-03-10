@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Album
+from .models import Album, Song
 from .forms import SongForm
 from django.contrib import messages
 
@@ -25,9 +25,19 @@ def index(request):
 def another_page(request):
     song_form = SongForm()
     if request.method == 'GET':
+
+        data = request.GET.get('search_song')
+
+        if data:
+            songs = Song.objects.filter(name__icontains=data)
+        else:
+            songs = Song.objects.all()
+
         context = {
             'form': song_form,
+            'songs': songs,
         }
+
         return render(request, 'pagetwo.html', context)
     else:
         new_song = SongForm(data=request.POST)
@@ -40,12 +50,46 @@ def another_page(request):
 
 
 def another_page_one(request, pk):
-    
-    context = {
-        'pk': pk,
-    }
+    try:
+        song = Song.objects.get(pk=pk)
+    except Exception:
+        messages.error(request, "Song not found")
+        return redirect('another_page')
 
-    return render(request, 'pagefour.html', context)
+    if request.method == 'GET':
+        form = SongForm(instance=song)
+
+        context = {
+            'form': form,
+        }
+
+        return render(request, 'pagefour.html', context)
+
+    else:
+        updated_song = SongForm(data=request.POST, instance=song)
+
+        if updated_song.is_valid():
+            updated_song.save()
+
+            messages.success(request, "Song has been updated")
+            return redirect('another_page')
+        else:
+            messages.error(request, "Error upon saving. Please try again.")
+            return redirect('another_page')
+        
+
+def delete_song(request, pk):
+    if request.method == 'GET':
+        try:
+            song = Song.objects.get(pk=pk)
+
+            song.delete()
+
+            messages.success(request, "Song has been deleted.")
+            return redirect('another_page')
+        except Exception:
+            messages.error(request, "Song not found")
+            return redirect('another_page')
 
 
 def page_three(request):
